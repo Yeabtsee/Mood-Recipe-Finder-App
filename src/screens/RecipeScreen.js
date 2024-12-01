@@ -1,68 +1,129 @@
-// /src/screens/RecipeScreen.js
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import { fetchRecipesByMood } from '../services/RecipeAPI';
+import GlobalStyles from '../styles/GlobalStyles';
+import ScreenBackground from '../components/ScreenBackground';
+import {fetchRecipesByMood} from '../services/RecipeAPI';
 
 const RecipeScreen = ({ route, navigation }) => {
     const { mood } = route.params;
     const [recipes, setRecipes] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
 
     useEffect(() => {
-        const loadRecipes = async () => {
-            try {
-                const fetchedRecipes = await fetchRecipesByMood(mood);
-                setRecipes(fetchedRecipes);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
+        const fetchRecipes = async () => {
+            const response = await fetchRecipesByMood(mood);
+            setRecipes(response);
+            setLoading(false);
         };
-
-        loadRecipes();
+        fetchRecipes();
     }, [mood]);
+
+    const renderRecipe = ({ item }) => (
+        <TouchableOpacity
+            style={styles.card}
+            onPress={() => navigation.navigate('RecipeDetails', { recipeId: item.id })}
+        >
+            <Image source={{ uri: item.image }} style={styles.recipeImage} />
+            <View style={styles.cardContent}>
+                <Text style={styles.recipeTitle}>{item.name}</Text>
+                <Text style={styles.recipeDetails}>
+                    ⏱ {item.readyInMinutes} mins | 🍴 {item.servings} servings
+                </Text>
+            </View>
+        </TouchableOpacity>
+    );
 
     if (loading) {
         return (
-            <View style={styles.center}>
-                <ActivityIndicator size="large" color="#000" />
-            </View>
-        );
-    }
-
-    if (error) {
-        return (
-            <View style={styles.center}>
-                <Text style={styles.error}>{error}</Text>
-            </View>
+            <ScreenBackground>
+                <View style={[GlobalStyles.container, styles.center]}>
+                    <ActivityIndicator size="large" color={GlobalStyles.colors.primary} />
+                    <Text style={styles.loadingText}>Fetching Recipes...</Text>
+                </View>
+            </ScreenBackground>
         );
     }
 
     return (
-        <FlatList
-            data={recipes}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-                <TouchableOpacity
-                    style={styles.card}
-                    onPress={() => navigation.navigate('RecipeDetails', { recipeId: item.id })}
-                >
-                    <Image source={{ uri: item.image }} style={styles.image} />
-                    <Text style={styles.title}>{item.name}</Text>
-                </TouchableOpacity>
-            )}
-        />
+        <ScreenBackground>
+            <View style={[GlobalStyles.container, styles.recipeContainer]}>
+                <Text style={styles.header}>Delicious Recipes for Your Mood: {mood}</Text>
+                <FlatList
+                    data={recipes}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={renderRecipe}
+                    contentContainerStyle={styles.list}
+                />
+            </View>
+        </ScreenBackground>
     );
 };
 
-const styles = StyleSheet.create({
-    center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-    error: { color: 'red', fontSize: 16 },
-    card: { margin: 8, backgroundColor: '#fff', borderRadius: 8, overflow: 'hidden', elevation: 3 },
-    image: { width: '100%', height: 150 },
-    title: { padding: 8, fontSize: 18, fontWeight: 'bold' },
-});
-
 export default RecipeScreen;
+
+const styles = StyleSheet.create({
+    recipeContainer: {
+        padding: 10,
+    },
+    header: {
+        fontSize: 28,
+        fontWeight: 'bold',
+        color: GlobalStyles.colors.primary,
+        marginVertical: 20,
+        textAlign: 'center',
+        textTransform: 'capitalize',
+        letterSpacing: 1.2,
+        textShadowColor: 'rgba(0, 0, 0, 0.3)',
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 5,
+    },
+    list: {
+        paddingBottom: 20,
+    },
+    card: {
+        backgroundColor: '#fff',
+        borderRadius: 15,
+        marginBottom: 20,
+        overflow: 'hidden',
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 5,
+    },
+    recipeImage: {
+        width: '100%',
+        height: 180,
+    },
+    cardContent: {
+        padding: 15,
+        backgroundColor: 'linear-gradient(180deg, #ffffff, #f8f8f8)',
+    },
+    recipeTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: GlobalStyles.colors.secondary,
+        marginBottom: 5,
+        textAlign: 'center',
+        textShadowColor: 'rgba(0, 0, 0, 0.1)',
+        textShadowOffset: { width: 0, height: 1 },
+        textShadowRadius: 2,
+    },
+    recipeDetails: {
+        fontSize: 16,
+        color: '#777',
+        fontStyle: 'italic',
+        textAlign: 'center',
+    },
+    center: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+    },
+    loadingText: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: GlobalStyles.colors.secondary,
+        marginTop: 10,
+    },
+});

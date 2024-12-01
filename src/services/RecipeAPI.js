@@ -13,16 +13,21 @@ export const fetchRecipesByMood = async (mood) => {
     try {
         const response = await axios.get(`${BASE_URL}/complexSearch`, {
             params: {
-                q: mood,
+                query: mood,
                 number: 10, // Number of recipes to fetch
                 apiKey: API_KEY,
             },
         });
 
-        const recipes = response.data.results.map((recipe) => ({
-            id: recipe.id,
-            name: recipe.title,
-            image: recipe.image,
+        const recipes = await Promise.all(response.data.results.map(async (recipe) => {
+            const details = await fetchRecipeDetails(recipe.id);
+            return {
+                id: recipe.id,
+                name: recipe.title,
+                image: recipe.image,
+                servings: details.servings,
+                readyInMinutes: details.readyInMinutes,
+            };
         }));
 
         return recipes;
@@ -48,6 +53,8 @@ export const fetchRecipeDetails = async (recipeId) => {
         return {
             name: response.data.title,
             image: response.data.image,
+            servings: response.data.servings,
+            readyInMinutes: response.data.readyInMinutes,
             description: response.data.summary.replace(/<[^>]+>/g, ''), // Remove HTML tags
             ingredients: response.data.extendedIngredients.map((ing) => ing.original),
             steps: response.data.analyzedInstructions[0]?.steps.map((step) => step.step) || [],
