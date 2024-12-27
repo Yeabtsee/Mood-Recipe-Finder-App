@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import GlobalStyles from '../styles/GlobalStyles';
 import ScreenBackground from '../components/ScreenBackground';
+import Header from '../components/Header';
 
 const FavoritesScreen = ({ navigation }) => {
     const [favorites, setFavorites] = useState([]);
@@ -68,6 +69,7 @@ const FavoritesScreen = ({ navigation }) => {
 
     return (
         <ScreenBackground>
+           
             <View style={[GlobalStyles.container, styles.favoritesContainer]}>
                 <Text style={styles.header}>Your Favorite Recipes</Text>
                 {favorites.length === 0 ? (

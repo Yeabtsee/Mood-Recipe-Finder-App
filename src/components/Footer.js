@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     footerContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        backgroundColor: '#333',
+        backgroundColor: 'rgb(22, 33, 27)',
         padding: 10,
     },
     footerIcon: {

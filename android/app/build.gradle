@@ -129,3 +129,4 @@ project.ext.vectoricons = [
     iconFontNames: ['MaterialIcons.ttf', 'FontAwesome.ttf'] // Add more fonts here if needed
 ]
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+apply from: "../../node_modules/react-native-linear-gradient/android.gradle"

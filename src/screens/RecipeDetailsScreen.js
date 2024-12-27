@@ -2,7 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { fetchRecipeDetails } from '../services/RecipeAPI';
-import ScreenBackground from '../components/ScreenBackground';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import GlobalStyles from '../styles/GlobalStyles';
+import Header from '../components/Header';
 
 const RecipeDetailsScreen = ({ route }) => {
     const { recipeId } = route.params;
@@ -28,7 +30,7 @@ const RecipeDetailsScreen = ({ route }) => {
     if (loading) {
         return (
             <View style={styles.center}>
-                <ActivityIndicator size="large" color="#000" />
+                <ActivityIndicator size="large" color={GlobalStyles.colors.primary}/>
             </View>
         );
     }
@@ -42,114 +44,151 @@ const RecipeDetailsScreen = ({ route }) => {
     }
 
     return (
-        
         <ScrollView style={styles.container}>
-            <ScreenBackground>
-            <Image source={{ uri: recipe.image }} style={styles.image} />
-            <Text style={styles.title}>{recipe.name}</Text>
-            <Text style={styles.description}>{recipe.description}</Text>
-            <Text style={styles.subheading}>Ingredients:</Text>
-            {recipe.ingredients.map((ingredient, index) => (
-                <Text key={index} style={styles.ingredient}>
-                    - {ingredient}
-                </Text>
-            ))}
-            <Text style={styles.subheading}>Steps:</Text>
-            {recipe.steps.map((step, index) => (
-                <Text key={index} style={styles.step}>
-                    {index + 1}. {step}
-                </Text>
-            ))}
-            </ScreenBackground>
+            
+            <View style={styles.headerContainer}>
+                <Image source={{ uri: recipe.image }} style={styles.image} />
+                <View style={styles.overlay}>
+                    <Text style={styles.title}>{recipe.name}</Text>
+                </View>
+            </View>
+            <View style={styles.infoContainer}>
+                <View style={styles.infoRow}>
+                    <Icon name="clock-o" size={20} color={GlobalStyles.colors.primary}/>
+                    <Text style={styles.infoText}>{recipe.readyInMinutes} mins</Text>
+                </View>
+                <View style={styles.infoRow}>
+                    <Icon name="cutlery" size={20} color={GlobalStyles.colors.primary}/>
+                    <Text style={styles.infoText}>{recipe.servings} servings</Text>
+                </View>
+            </View>
+            <View style={styles.content}>
+                <Text style={styles.sectionTitle}>Ingredients</Text>
+                {recipe.ingredients.map((ingredient, index) => (
+                    <View key={index} style={styles.listItem}>
+                        <Icon name="check-circle" size={18} color="#4caf50" />
+                        <Text style={styles.listText}>{ingredient}</Text>
+                    </View>
+                ))}
+                <Text style={styles.sectionTitle}>Steps</Text>
+                {recipe.steps.map((step, index) => (
+                    <View key={index} style={styles.stepItem}>
+                        <Text style={styles.stepNumber}>{index + 1}</Text>
+                        <Text style={styles.stepText}>{step}</Text>
+                    </View>
+                ))}
+                <Text style={styles.lastText}>Enjoy Your Meal!</Text>
+            </View>
         </ScrollView>
-        
     );
 };
+
+export default RecipeDetailsScreen;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 16,
-        backgroundColor: '#fff',
-       marginBottom: 20,
+        backgroundColor: '#f9f9f9',
+    },
+    headerContainer: {
+        position: 'relative',
     },
     image: {
         width: '100%',
         height: 250,
-        borderRadius: 15,
-        marginBottom: 16,
-        elevation: 4,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.3,
-        shadowRadius: 5,
+    },
+    overlay: {
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        padding: 10,
     },
     title: {
-        fontSize: 30,
+        fontSize: 24,
         fontWeight: 'bold',
-        color: '#222',
-        marginBottom: 8,
+        color: '#fff',
         textAlign: 'center',
-        textShadowColor: 'rgba(0, 0, 0, 0.2)',
-        textShadowOffset: { width: 1, height: 1 },
-        textShadowRadius: 3,
     },
-    description: {
+    infoContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 15,
+        backgroundColor: '#fff',
+        borderTopWidth: 1,
+        borderTopColor: '#eee',
+        borderBottomWidth: 1,
+        borderBottomColor: '#eee',
+    },
+    infoRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    infoText: {
         fontSize: 16,
-        color: '#555',
-        marginBottom: 16,
-        lineHeight: 24,
-        textAlign: 'justify',
-        backgroundColor: '#f9f9f9',
-        padding: 10,
-        borderRadius: 10,
-        elevation: 1,
+        marginLeft: 8,
+        color: '#333',
     },
-    subheading: {
-        fontSize: 22,
+    content: {
+        padding: 15,
+    },
+    sectionTitle: {
+        fontSize: 20,
         fontWeight: 'bold',
-        color: '#444',
-        marginTop: 20,
-        marginBottom: 12,
-        textAlign: 'left',
+        color: '#333',
+        marginVertical: 10,
         borderBottomWidth: 2,
-        borderBottomColor: '#ff7043',
+        borderBottomColor: GlobalStyles.colors.primary,
         paddingBottom: 5,
     },
-    ingredient: {
-        fontSize: 16,
-        color: '#444',
-        marginVertical: 3,
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        backgroundColor: '#e8f5e9',
-        borderRadius: 5,
-        marginBottom: 4,
-        elevation: 1,
+    listItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 5,
     },
-    step: {
+    listText: {
         fontSize: 16,
-        color: '#444',
-        marginVertical: 8,
-        lineHeight: 22,
-        backgroundColor: 'aliceblue',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
+        marginLeft: 8,
+        color: '#555',
+    },
+    stepItem: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        marginVertical: 10,
+        backgroundColor: '#fff',
+        padding: 10,
         borderRadius: 5,
-        elevation: 1,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+        elevation: 3,
+    },
+    stepNumber: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: GlobalStyles.colors.primary,
+        marginRight: 10,
+    },
+    stepText: {
+        fontSize: 16,
+        color: '#555',
+        flex: 1,
     },
     center: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fff',
     },
     error: {
-        color: 'red',
         fontSize: 18,
+        color: 'red',
+    },
+    lastText: {
+        fontSize: 24,
         fontWeight: 'bold',
+        color: GlobalStyles.colors.primary,
         textAlign: 'center',
+        marginVertical: 20,
     },
 });
-
-export default RecipeDetailsScreen;

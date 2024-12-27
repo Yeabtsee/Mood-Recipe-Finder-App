@@ -1,8 +1,10 @@
 // /src/services/RecipeAPI.js
 import axios from 'axios';
-const API_KEY = '4ad75aedf5d24222a9dc4e5040024a9e';
 
+// const API_KEY ='4891863f5a714fb49aa44930fe5c8b24'
+const API_KEY = '5f0540979bf4493aa1308ecd24336945';
 // const API_KEY = '439f8f619326438c8ff96351bf84b9c8';
+
 const BASE_URL = 'https://api.spoonacular.com/recipes';
 
 /**

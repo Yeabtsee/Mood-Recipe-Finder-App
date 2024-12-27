@@ -1,41 +1,57 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import GlobalStyles from '../styles/GlobalStyles';
 import ScreenBackground from '../components/ScreenBackground';
 import Footer from '../components/Footer';
-
+import Icon from 'react-native-vector-icons/MaterialIcons'; // Use react-native-vector-icons
 
 const HomeScreen = ({ navigation }) => {
     return (
         <ScreenBackground>
             <View style={[GlobalStyles.container, styles.homeContainer]}>
-                <Text style={styles.welcomeText}>Welcome to Mood Recipe Finder</Text>
-                <Text style={styles.descriptionText}>
-                    Explore delicious recipes tailored to your mood!
-                </Text>
+                {/* Welcome Section */}
+                <View style={styles.header}>
+                    <Image
+                        source={require('../Assets/images/chefs-hat.png')} // Add your own image here
+                        style={styles.logo}
+                        resizeMode="contain"
+                    />
+                    <Text style={styles.welcomeText}>Welcome to Mood Recipe Finder</Text>
+                    <Text style={styles.descriptionText}>
+                        Explore delicious recipes tailored to your mood!
+                    </Text>
+                </View>
 
                 {/* Highlights Section */}
                 <View style={styles.highlights}>
                     <Text style={styles.highlightsTitle}>Why Use This App?</Text>
-                    <Text style={styles.highlightsText}>
-                        🍳 Personalized recipes based on your mood.
-                    </Text>
-                    <Text style={styles.highlightsText}>
-                        🌟 Easy-to-follow instructions for every dish.
-                    </Text>
-                    <Text style={styles.highlightsText}>
-                        🥗 Perfect for any occasion or craving.
-                    </Text>
+                    <View style={styles.highlightsItem}>
+                        <Icon name="emoji-food-beverage" size={24} color={GlobalStyles.colors.primary} />
+                        <Text style={styles.highlightsText}>Personalized recipes</Text>
+                    </View>
+                    <View style={styles.highlightsItem}>
+                        <Icon name="star" size={24} color={GlobalStyles.colors.primary} />
+                        <Text style={styles.highlightsText}>Easy-to-follow instructions</Text>
+                    </View>
+                    <View style={styles.highlightsItem}>
+                        <Icon name="eco" size={24} color={GlobalStyles.colors.primary} />
+                        <Text style={styles.highlightsText}>Perfect for any occasion</Text>
+                    </View>
                 </View>
 
-                {/* Start Button */}
-                <TouchableOpacity
-                    style={styles.startButton}
-                    onPress={() => navigation.navigate('Mood')}
-                >
-                    <Text style={styles.buttonText}>Get Started</Text>
-                </TouchableOpacity>
+                {/* Interactive Call to Action */}
+                <View style={styles.callToAction}>
+                    {/* <Text style={styles.ctaText}>Ready to find your perfect recipe?</Text> */}
+                    <TouchableOpacity
+                        style={styles.startButton}
+                        onPress={() => navigation.navigate('Mood')}
+                    >
+                        <Text style={styles.buttonText}>Get Started</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
+
+            {/* Footer */}
             <Footer />
         </ScreenBackground>
     );
@@ -43,49 +59,70 @@ const HomeScreen = ({ navigation }) => {
 
 export default HomeScreen;
 
- const styles = StyleSheet.create({
-    background: {
-        flex: 1,
-        resizeMode: 'cover',
-    },
+const styles = StyleSheet.create({
     homeContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adds a dark overlay to make text more visible
+    },
+    header: {
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    logo: {
+        width: 150,
+        height: 150,
+        marginBottom: 16,
     },
     welcomeText: {
         fontSize: 28,
         fontWeight: 'bold',
-        color: '#fff',
+        color: GlobalStyles.colors.primary,
         textAlign: 'center',
-        marginBottom: 16,
+        marginBottom: 8,
     },
     descriptionText: {
         fontSize: 16,
-        color: '#dcdcdc',
+        color: '#6c757d',
         textAlign: 'center',
-        marginBottom: 32,
         paddingHorizontal: 20,
     },
     highlights: {
-        marginBottom: 32,
-        alignItems: 'center',
+        marginVertical: 32,
+        width: '100%',
+        paddingHorizontal: 20,
     },
     highlightsTitle: {
         fontSize: 22,
         fontWeight: 'bold',
-        color: '#fff',
-        marginBottom: 12,
+        color: GlobalStyles.colors.primary,
+        marginBottom: 16,
+        textAlign: 'center',
+    },
+    highlightsItem: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 8,
     },
     highlightsText: {
         fontSize: 16,
-        color: '#f0f0f0',
-        marginVertical: 4,
+        color: 'black',
+        marginLeft: 8,
+    },
+    callToAction: {
+        marginTop: 20,
+        alignItems: 'center',
+    },
+    ctaText: {
+        fontSize: 18,
+        color: '#ddd',
+        marginBottom: 12,
+        textAlign: 'center',
     },
     startButton: {
-        backgroundColor: GlobalStyles.colors.accent,
+        backgroundColor: GlobalStyles.colors.primary,
         paddingVertical: 12,
         paddingHorizontal: 24,
         borderRadius: 10,

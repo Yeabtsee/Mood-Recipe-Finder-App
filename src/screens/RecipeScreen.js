@@ -6,6 +6,7 @@ import GlobalStyles from '../styles/GlobalStyles';
 import ScreenBackground from '../components/ScreenBackground';
 import { fetchRecipesByMood } from '../services/RecipeAPI';
 import Footer from '../components/Footer';
+import Header from '../components/Header';
 
 const RecipeScreen = ({ route, navigation }) => {
     const { mood } = route.params;
@@ -94,6 +95,7 @@ const RecipeScreen = ({ route, navigation }) => {
 
     return (
         <ScreenBackground>
+           
             <View style={[GlobalStyles.container, styles.recipeContainer]}>
                 <Text style={styles.header}>Delicious Recipes for Your Mood: {mood}</Text>
                 <FlatList
