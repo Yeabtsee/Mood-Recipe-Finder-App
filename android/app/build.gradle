@@ -100,16 +100,10 @@ android {
         }
     }
     buildTypes {
-        debug {
-            signingConfig signingConfigs.debug
-        }
-        release {
-            // Caution! In production, you need to generate your own keystore file.
-            // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.release
+       release {
             minifyEnabled false
             shrinkResources false
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -129,4 +123,3 @@ project.ext.vectoricons = [
     iconFontNames: ['MaterialIcons.ttf', 'FontAwesome.ttf'] // Add more fonts here if needed
 ]
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
-apply from: "../../node_modules/react-native-linear-gradient/android.gradle"
