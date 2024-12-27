@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import GlobalStyles from '../styles/GlobalStyles';
 import ScreenBackground from '../components/ScreenBackground';
-import {fetchRecipesByMood} from '../services/RecipeAPI';
+import { fetchRecipesByMood } from '../services/RecipeAPI';
+import Footer from '../components/Footer';
 
 const RecipeScreen = ({ route, navigation }) => {
     const { mood } = route.params;
     const [recipes, setRecipes] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [favorites, setFavorites] = useState([]);
 
     useEffect(() => {
         const fetchRecipes = async () => {
@@ -18,20 +22,64 @@ const RecipeScreen = ({ route, navigation }) => {
         fetchRecipes();
     }, [mood]);
 
-    const renderRecipe = ({ item }) => (
-        <TouchableOpacity
-            style={styles.card}
-            onPress={() => navigation.navigate('RecipeDetails', { recipeId: item.id })}
-        >
-            <Image source={{ uri: item.image }} style={styles.recipeImage} />
-            <View style={styles.cardContent}>
-                <Text style={styles.recipeTitle}>{item.name}</Text>
-                <Text style={styles.recipeDetails}>
-                    ⏱ {item.readyInMinutes} mins | 🍴 {item.servings} servings
-                </Text>
+    useEffect(() => {
+        const loadFavorites = async () => {
+            const storedFavorites = await AsyncStorage.getItem('favorites');
+            if (storedFavorites) {
+                setFavorites(JSON.parse(storedFavorites));
+            }
+        };
+        loadFavorites();
+    }, []);
+
+    const toggleFavorite = async (recipe) => {
+        try {
+            const isFavorite = favorites.some((item) => item.id === recipe.id);
+            let updatedFavorites;
+
+            if (isFavorite) {
+                updatedFavorites = favorites.filter((item) => item.id !== recipe.id);
+            } else {
+                updatedFavorites = [...favorites, recipe];
+            }
+
+            setFavorites(updatedFavorites);
+            await AsyncStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+        } catch (error) {
+            console.error('Error toggling favorite:', error);
+        }
+    };
+
+    const renderRecipe = ({ item }) => {
+        const isFavorite = favorites.some((recipe) => recipe.id === item.id);
+        return (
+            <View style={styles.card}>
+                <Image source={{ uri: item.image }} style={styles.recipeImage} />
+                <View style={styles.cardContent}>
+                    <Text style={styles.recipeTitle}>{item.name}</Text>
+                    <Text style={styles.recipeDetails}>
+                        ⏱ {item.readyInMinutes} mins | 🍴 {item.servings} servings
+                    </Text>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity
+                            style={styles.detailsButton}
+                            onPress={() => navigation.navigate('RecipeDetails', { recipeId: item.id })}
+                        >
+                            <FontAwesome name="eye" size={30} color= {GlobalStyles.colors.primary} />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => toggleFavorite(item)}>
+                            <FontAwesome
+                                name="heart"
+                                size={24}
+                                color={isFavorite ? 'red' : 'rgb(214, 214, 214)'}
+                                style={styles.likeButton}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                </View>
             </View>
-        </TouchableOpacity>
-    );
+        );
+    };
 
     if (loading) {
         return (
@@ -55,6 +103,7 @@ const RecipeScreen = ({ route, navigation }) => {
                     contentContainerStyle={styles.list}
                 />
             </View>
+            <Footer />
         </ScreenBackground>
     );
 };
@@ -115,6 +164,31 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
         textAlign: 'center',
     },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginTop: 10,
+    },
+    detailsButton: {
+        backgroundColor: "transparent",
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        borderRadius: 5,
+    },
+    likeButton: {
+        backgroundColor: 'transparent',
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
     center: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -125,5 +199,8 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: GlobalStyles.colors.secondary,
         marginTop: 10,
+    },
+    heartIcon: {
+        fontSize: 24,
     },
 });

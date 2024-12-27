@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet,ImageBackground } from 'react-native';
 import GlobalStyles from '../styles/GlobalStyles.js';
 import ScreenBackground from '../components/ScreenBackground.js';
+import Footer from '../components/Footer.js';
 
 
 const MoodScreen = ({ navigation }) => {
@@ -32,6 +33,7 @@ const MoodScreen = ({ navigation }) => {
                 ))}
             </View>
          </View>
+         <Footer/>
         </ScreenBackground>
     );
 };

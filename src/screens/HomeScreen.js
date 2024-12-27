@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import GlobalStyles from '../styles/GlobalStyles';
 import ScreenBackground from '../components/ScreenBackground';
+import Footer from '../components/Footer';
+
 
 const HomeScreen = ({ navigation }) => {
     return (
@@ -34,6 +36,7 @@ const HomeScreen = ({ navigation }) => {
                     <Text style={styles.buttonText}>Get Started</Text>
                 </TouchableOpacity>
             </View>
+            <Footer />
         </ScreenBackground>
     );
 };
