@@ -44,7 +44,7 @@ const MoodScreen = ({ navigation }) => {
                 {/* Fun Section */}
                 <View style={styles.funSection}>
                     <Image
-                        source={require('../Assets/images/chefff.jpg')} // Add an illustration of a chef or food
+                        source={require('../Assets/images/chefff.jpg')}
                         style={styles.chefImage}
                         resizeMode="contain"
                     />
