@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import GlobalStyles from '../styles/GlobalStyles';
 import ScreenBackground from '../components/ScreenBackground';
 import Footer from '../components/Footer';
-import Icon from 'react-native-vector-icons/MaterialIcons'; // Use react-native-vector-icons
+import Icon from 'react-native-vector-icons/MaterialIcons'; 
 
 const HomeScreen = ({ navigation }) => {
     return (
@@ -12,7 +12,7 @@ const HomeScreen = ({ navigation }) => {
                 {/* Welcome Section */}
                 <View style={styles.header}>
                     <Image
-                        source={require('../Assets/images/chefs-hat.png')} // Add your own image here
+                        source={require('../Assets/images/chefs-hat.png')} 
                         style={styles.logo}
                         resizeMode="contain"
                     />
