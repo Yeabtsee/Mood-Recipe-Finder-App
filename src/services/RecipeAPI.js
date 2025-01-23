@@ -1,7 +1,5 @@
-// /src/services/RecipeAPI.js
 import axios from 'axios';
 
-// const API_KEY ='4891863f5a714fb49aa44930fe5c8b24'
 const API_KEY = '5f0540979bf4493aa1308ecd24336945';
 // const API_KEY = '439f8f619326438c8ff96351bf84b9c8';
 
@@ -17,7 +15,7 @@ export const fetchRecipesByMood = async (mood) => {
         const response = await axios.get(`${BASE_URL}/complexSearch`, {
             params: {
                 query: mood,
-                number: 10, // Number of recipes to fetch
+                number: 10, 
                 apiKey: API_KEY,
             },
         });
