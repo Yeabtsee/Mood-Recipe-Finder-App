@@ -9,7 +9,6 @@ const HomeScreen = ({ navigation }) => {
     return (
         <ScreenBackground>
             <View style={[GlobalStyles.container, styles.homeContainer]}>
-                {/* Welcome Section */}
                 <View style={styles.header}>
                     <Image
                         source={require('../Assets/images/chefs-hat.png')} 
@@ -22,7 +21,6 @@ const HomeScreen = ({ navigation }) => {
                     </Text>
                 </View>
 
-                {/* Highlights Section */}
                 <View style={styles.highlights}>
                     <Text style={styles.highlightsTitle}>Why Use This App?</Text>
                     <View style={styles.highlightsItem}>
@@ -39,7 +37,6 @@ const HomeScreen = ({ navigation }) => {
                     </View>
                 </View>
 
-                {/* Interactive Call to Action */}
                 <View style={styles.callToAction}>
                     {/* <Text style={styles.ctaText}>Ready to find your perfect recipe?</Text> */}
                     <TouchableOpacity
@@ -50,8 +47,6 @@ const HomeScreen = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
             </View>
-
-            {/* Footer */}
             <Footer />
         </ScreenBackground>
     );
