@@ -9,18 +9,16 @@ import Header from '../components/Header';
 const FavoritesScreen = ({ navigation }) => {
     const [favorites, setFavorites] = useState([]);
 
-    // Load favorites from AsyncStorage
     const loadFavorites = async () => {
         try {
             const storedFavorites = await AsyncStorage.getItem('favorites');
             const parsedFavorites = storedFavorites ? JSON.parse(storedFavorites) : [];
-            setFavorites(parsedFavorites.reverse()); // Show the latest liked first
+            setFavorites(parsedFavorites.reverse()); 
         } catch (error) {
             console.error('Error loading favorites:', error);
         }
     };
 
-    // Remove a favorite item
     const removeFavorite = async (recipeId) => {
         try {
             const updatedFavorites = favorites.filter((item) => item.id !== recipeId);
@@ -33,7 +31,6 @@ const FavoritesScreen = ({ navigation }) => {
     };
 
     useEffect(() => {
-        // Load favorites when the screen is focused
         const unsubscribe = navigation.addListener('focus', () => {
             loadFavorites();
         });
