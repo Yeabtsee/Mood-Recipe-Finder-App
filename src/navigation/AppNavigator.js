@@ -2,8 +2,6 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { View, Text, StyleSheet } from 'react-native';
-
-// Import your screens
 import HomeScreen from '../screens/HomeScreen';
 import MoodScreen from '../screens/MoodScreen';
 import RecipeScreen from '../screens/RecipeScreen';
@@ -11,7 +9,6 @@ import RecipeDetailsScreen from '../screens/RecipeDetailsScreen';
 import FavoritesScreen from '../screens/FavoritesScreen';
 import GlobalStyles from '../styles/GlobalStyles';
 
-// Custom Header Component
 const CustomHeader = ({ title }) => (
     <View style={styles.headerContainer}>
         <Text style={styles.headerTitle}>{title}</Text>
