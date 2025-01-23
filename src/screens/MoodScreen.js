@@ -19,7 +19,6 @@ const MoodScreen = ({ navigation }) => {
     return (
         <ScreenBackground>
             <View style={[GlobalStyles.container, styles.moodContainer]}>
-                {/* Title Section */}
                 <View style={styles.header}>
                     <Text style={styles.title}>How are you feeling today?</Text>
                     <Text style={styles.subtitle}>
@@ -27,7 +26,6 @@ const MoodScreen = ({ navigation }) => {
                     </Text>
                 </View>
 
-                {/* Mood Buttons */}
                 <View style={styles.buttonGroup}>
                     {moods.map(({ mood, displayText, emoji }) => (
                         <TouchableOpacity
@@ -41,7 +39,6 @@ const MoodScreen = ({ navigation }) => {
                     ))}
                 </View>
 
-                {/* Fun Section */}
                 <View style={styles.funSection}>
                     <Image
                         source={require('../Assets/images/chefff.jpg')}
@@ -54,7 +51,6 @@ const MoodScreen = ({ navigation }) => {
                 </View>
             </View>
 
-            {/* Footer */}
             <Footer />
         </ScreenBackground>
     );
