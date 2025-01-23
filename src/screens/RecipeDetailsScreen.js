@@ -1,4 +1,3 @@
-// /src/screens/RecipeDetailsScreen.js
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { fetchRecipeDetails } from '../services/RecipeAPI';
